@@ -1,0 +1,14 @@
+<button class="ms-2 btn btn-secondary d-flex align-items-center"
+    hx-patch="{{ url_for('edit_message', message_id=message_id) }}"
+    hx-vals='{"is_public": false}'
+    hx-trigget="click"
+    hx-target="this"
+    hx-swap="outerHTML"
+    hx-ext="json-enc">
+    <i class="me-2" style="width: 20px; height: 20px;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>          
+    </i>
+    Hide
+</button>

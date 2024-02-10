@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %} {{user.full_name}} | Whisper {% endblock %}
+
+{% block content %}
+<div class="min-vh-100 d-flex flex-column align-items-center">
+    <div class="w-100 bg-dark text-white py-5" style="height: 30vh"></div>
+    <div class="w-100 flex-grow-1" style="background-color: #3C5C96;">
+        <div class="w-100 m-auto">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-lg-6 m-auto">
+                    <div class="d-flex flex-column align-items-center" style="margin-top: -11rem">
+                        <p class="mb-5 text-center text-white">
+                            Whisper a secret message to <strong>{{user.full_name}}</strong> anonymously
+                        </p>
+                        <div class="rounded-circle bg-light shadow-sm" style="width: 6rem; height: 6rem; z-index: 10; margin-bottom: -1.4rem;"></div>
+                        <div class="w-100 pt-5 pb-2 px-2 bg-white rounded-3">
+                            {% if user.bio %}
+                                <p class="text-center">{{user.bio}}</p>
+                            {% endif %}
+                            <form class="w-100" action="{{ url_for('create_messsage_for_user', user_id=user.id) }}" method="post">
+                                <textarea onchange="updateRemainingChars()" id="message-content" class="w-100 border-2 bg-light p-2" name="content" maxlength="500" cols="30" rows="10" required placeholder="You want to whisper something anonymously to {{user.full_name}} ? write here"></textarea>
+                                <div class="py-3 px-2 d-flex justify-content-between align-items-center">
+                                    <span class=" text-muted">Remaining letters: <strong id="remaining-letters"></strong></span>
+                                    <div>
+                                        <input type="checkbox" name="anonymously" checked>
+                                        <label for="anonymously">Anonymously</label>
+                                    </div>
+                                </div>
+                                <input class="btn btn-dark w-100" style="padding: 0.8rem;" type="submit" value="Send now">
+                            </form>
+                            <div class="mt-2 p-2 d-flex justify-content-between align-items-center">
+                                {% if not user.hide_visitors_count %}
+                                    <span><small>Visitors: </small> {{user.num_of_visitors}}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-100">
+                        {% if messages %}
+                            <div class="my-3 bg-white rounded-3 p-2">
+                                {% with messages=messages, public=True %}
+                                    {% include 'components/messages_list.html' %}
+                                {% endwith %}
+                            </div>
+                        {% else %}
+                            <div class="my-3 bg-white rounded-3 p-3 d-flex flex-column align-items-center justify-content-center">
+                                <hr class="w-100 px-5 text-muted">
+                                <i style="width: 6rem; height: 6rem;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                        <path fill-rule="evenodd" d="M4.848 2.771A49.144 49.144 0 0 1 12 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97-1.94.284-3.916.455-5.922.505a.39.39 0 0 0-.266.112L8.78 21.53A.75.75 0 0 1 7.5 21v-3.955a48.842 48.842 0 0 1-2.652-.316c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97Z" clip-rule="evenodd" />
+                                    </svg>
+                                </i>
+                                <br>
+                                <h3>No public messages ...</h3>  
+                                <span class="py-4 text-center">
+                                    {{user.full_name}} did not share any messages for public.
+                                    <br>
+                                    Any messages this user decides to share in public will show here.
+                                </span>
+                                <hr class="w-100 px-5 text-muted">
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // console.log('hello')
+    const messageContentTextArea = document.querySelector('#message-content')
+    // console.log('messageContentTextArea =', messageContentTextArea)
+    if (messageContentTextArea) {
+        const maxlength = Number(messageContentTextArea.getAttribute('maxlength'))
+        const ramainingLettersElement = document.querySelector('#remaining-letters')
+        if (ramainingLettersElement) {
+            ramainingLettersElement.textContent = maxlength.toString()
+        }
+        console.log('maxlength =', maxlength)
+        messageContentTextArea.addEventListener('input', function (event) {
+            const contentLength = messageContentTextArea.value.length
+            if (ramainingLettersElement) {
+                ramainingLettersElement.textContent = (maxlength - contentLength).toString()
+            }
+        })
+    }
+</script>
+{% endblock %}

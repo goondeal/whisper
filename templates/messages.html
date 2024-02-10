@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %} Messages | Whisper {% endblock %}
+
+{% block content %}
+<div class="min-vh-100 d-flex flex-column justify-content-start align-items-center">
+    <div class="w-100 bg-dark text-white py-5 d-flex justify-content-center">
+        <div class="container d-flex flex-column align-items-center">
+            <div class="rounded-circle bg-light" style="width: 100px; height: 100px"></div>
+            <span class="fs-5 my-2">{{ user.full_name }}</span>
+            <div class="my-2 d-flex flex-column align-items-center">
+                <small class="text-muted text-center">share your link <br> and let people whisper to you</small>
+                <div class="d-flex align-items-center">
+                    <span id="user-link">{{ url_for('read_user', user_id=user.id) }}</span>
+                    <button class="ms-3 btn btn-outline-primary px-1 py-0" onclick="copyLinkToClipboard()">
+                        copy
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="w-100 flex-grow-1" style="background-color: #3C5C96;">
+        <div class="container m-auto row p-0">
+            <div class="my-3 mx-auto col-sm-12 col-lg-9">
+                <div class="bg-white px-2 py-4 rounded-2 d-flex flex-column align-items-center">
+                    <div class="row w-100">
+                        <div class="btn-group m-auto col-sm-12 col-lg-8" role="group">
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                            <label class="d-flex align-items-center btn btn-outline-dark" for="btnradio1"
+                                hx-get="{{url_for('read_received_messages') }}"
+                                hx-trigger="load, click"
+                                hx-target="#messages-box"
+                                hx-swap="innerHTML"
+                            >
+                                <i class="me-2" style="width: 20px; height: 20px">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                        <path fill-rule="evenodd" d="M4.848 2.771A49.144 49.144 0 0 1 12 2.25c2.43 0 4.817.178 7.152.52 1.978.292 3.348 2.024 3.348 3.97v6.02c0 1.946-1.37 3.678-3.348 3.97-1.94.284-3.916.455-5.922.505a.39.39 0 0 0-.266.112L8.78 21.53A.75.75 0 0 1 7.5 21v-3.955a48.842 48.842 0 0 1-2.652-.316c-1.978-.29-3.348-2.024-3.348-3.97V6.741c0-1.946 1.37-3.68 3.348-3.97Z" clip-rule="evenodd" />
+                                    </svg>
+                                </i>
+                                Received
+                            </label>
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                            <label class="d-flex align-items-center btn btn-outline-dark" for="btnradio2"
+                                hx-get="{{url_for('read_fav_messages') }}"
+                                hx-trigger="click"
+                                hx-target="#messages-box"
+                                hx-swap="innerHTML"
+                            >
+                                <i class="me-2" style="width: 20px; height: 20px">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clip-rule="evenodd" />
+                                    </svg>
+                                </i>
+                                Favourite
+                            </label>
+
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                            <label class="d-flex align-items-center btn btn-outline-dark" for="btnradio3"
+                                hx-get="{{url_for('read_sent_messages') }}"
+                                hx-trigger="click"
+                                hx-target="#messages-box"
+                                hx-swap="innerHTML"
+                            >
+                                <i class="me-2" style="width: 20px; height: 20px">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                        <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
+                                    </svg>                                  
+                                </i>
+                                Sent
+                            </label>
+                        </div>
+                    </div>
+                    <div id="messages-box" class="py-3 w-100">
+                        
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function copyLinkToClipboard() {
+        // Get the user link
+        const link = document.querySelector('#user-link').textContent
+        // Copy the text inside the text field
+        navigator.clipboard.writeText(link);
+        // Alert
+        alert("Your profile link has been copied to your clipboard");
+    }
+</script>
+{% endblock %}

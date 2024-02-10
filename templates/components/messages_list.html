@@ -1,0 +1,13 @@
+<div class="bg-white w-100">
+    {% for m in messages %}
+        <div class="my-3">
+            {% with message=m, public=public %}
+                {% if type=='sent' %}
+                    {% include 'components/sent_message_card.html' %}
+                {% else %}
+                    {% include 'components/received_message_card.html' %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    {% endfor %}
+</div>

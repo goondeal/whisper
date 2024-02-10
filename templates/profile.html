@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %} Profile | Whisper {% endblock %}
+
+{% block content %}
+<div class="min-vh-100 d-flex flex-column align-items-center">
+    <div class="w-100 bg-dark text-white py-5" style="height: 30vh"></div>
+    <div class="w-100 flex-grow-1" style="background-color: #3C5C96;">
+        <div class="w-100 m-auto">
+            <div class="row">
+                <div class="col-sm-12 col-md-8 col-lg-6 m-auto">
+                    <div class="d-flex flex-column align-items-center" style="margin-top: -15rem">
+                        <div class="mb-4 d-flex flex-column align-items-center">
+                            <div class="rounded-circle bg-light" style="width: 100px; height: 100px"></div>
+                            <span class="fs-4 my-2 text-white">{{ user.name }}</span>
+                        </div>
+                        <div class="p-2 rounded-circle bg-white shadow-sm" style="width: 4rem; height: 4rem; z-index: 10; margin-bottom: -1.4rem;">
+                            <i>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M12 6.75a5.25 5.25 0 0 1 6.775-5.025.75.75 0 0 1 .313 1.248l-3.32 3.319c.063.475.276.934.641 1.299.365.365.824.578 1.3.64l3.318-3.319a.75.75 0 0 1 1.248.313 5.25 5.25 0 0 1-5.472 6.756c-1.018-.086-1.87.1-2.309.634L7.344 21.3A3.298 3.298 0 1 1 2.7 16.657l8.684-7.151c.533-.44.72-1.291.634-2.309A5.342 5.342 0 0 1 12 6.75ZM4.117 19.125a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Z" clip-rule="evenodd" />
+                                    <path d="m10.076 8.64-2.201-2.2V4.874a.75.75 0 0 0-.364-.643l-3.75-2.25a.75.75 0 0 0-.916.113l-.75.75a.75.75 0 0 0-.113.916l2.25 3.75a.75.75 0 0 0 .643.364h1.564l2.062 2.062 1.575-1.297Z" />
+                                    <path fill-rule="evenodd" d="m12.556 17.329 4.183 4.182a3.375 3.375 0 0 0 4.773-4.773l-3.306-3.305a6.803 6.803 0 0 1-1.53.043c-.394-.034-.682-.006-.867.042a.589.589 0 0 0-.167.063l-3.086 3.748Zm3.414-1.36a.75.75 0 0 1 1.06 0l1.875 1.876a.75.75 0 1 1-1.06 1.06L15.97 17.03a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                                </svg>                             
+                            </i>
+                        </div>
+                        <div class="w-100 pt-4 pb-3 px-3 bg-white rounded-3">
+                            <h4 class="text-center mb-4">Account Settings</h4>
+                            <form class="w-100" action="{{ url_for('update_user_info') }}" method="post">
+                                <div class="w-100 mb-2 d-flex align-items-center">
+                                    <input class="w-100 mb-2 p-2 border bg-white" type="text" name="name" placeholder="Full Name" {% if user.name %} value="{{user.name}}" {% endif %} required>
+                                </div>
+                                <div class="w-100 mb-2">
+                                    <input class="w-100 mb-2 p-2 border bg-white" type="email" name="email" placeholder="Email" {% if user.email %} value="{{user.email}}" {% endif %} required>
+                                </div>
+                                <div class="w-100 mb-2">
+                                    <select class="w-100 mb-2 p-2 border bg-white" name="gender" required>
+                                        <option value="M" {% if user.gender == 'M' %} selected {% endif %}>Male</option>
+                                        <option value="F" {% if user.gender == 'F' %} selected {% endif %}>Female</option>
+                                    </select>
+                                </div>
+                                <div class="w-100 mb-2">
+                                    <textarea class="w-100 mb-2 p-2 border bg-white" name="bio" cols="30" rows="10" maxlength="300" placeholder="Tell a little bit about yourself">{% if user.bio %} {{user.bio}} {% endif %}</textarea>
+                                </div>
+                                <input class="btn btn-dark w-100" style="padding: 0.5rem;" type="submit" value="Save Changes">
+                            </form>
+                            <div class="mt-3 text-muted d-flex justify-content-between align-items-center">
+                                <span>Number of visitors: <span class="text-dark">{{user.num_of_visitors}}</span></span>
+                                <span>Join date: <span class="text-dark">{{user.joined_at}}</span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-100 my-4 d-flex flex-column align-items-center">
+                        <div class="p-2 rounded-circle bg-white shadow-sm" style="width: 4rem; height: 4rem; z-index: 10; margin-bottom: -1.4rem;">
+                            <i>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 0 0-1.032 0 11.209 11.209 0 0 1-7.877 3.08.75.75 0 0 0-.722.515A12.74 12.74 0 0 0 2.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 0 0 .374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 0 0-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08Zm3.094 8.016a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+                                </svg>                                                               
+                            </i>
+                        </div>
+                        <div class="w-100 px-3 pt-4 pb-3 rounded-3 bg-white">
+                            <h4 class="text-center mb-4">Privacy Settings</h4>
+                            <form action="{{ url_for('update_user_privacy_settings') }}" method="post">
+                                <div class="mb-2 d-flex align-items-center">
+                                    <input type="checkbox" name="allow_new_messages" {% if user.allow_new_messages %} checked {% endif %}>
+                                    <label class="ms-2" for="allow_new_messages">Allow new receiving messages</label>
+                                </div>
+                                <div class="mb-2 d-flex align-items-center">
+                                    <input type="checkbox" name="allow_sending_images" {% if user.allow_sending_images %} checked {% endif %}>
+                                    <label class="ms-2" for="allow_sending_images">Allow attaching images with messages</label>
+                                </div>
+                                <div class="mb-2 d-flex align-items-center">
+                                    <input type="checkbox" name="allow_anonymous_users_messages" {% if user.allow_anonymous_users_messages %} checked {% endif %}>
+                                    <label class="ms-2" for="allow_anonymous_users_messages">Allow messages from unregistered users</label>
+                                </div>
+                                <div class="mb-2 d-flex align-items-center">
+                                    <input type="checkbox" name="allow_notifications" {% if user.allow_notifications %} checked {% endif %}>
+                                    <label class="ms-2" for="allow_notifications">Allow notifications</label>
+                                </div>
+                                <div class="mb-2 d-flex align-items-center">
+                                    <input type="checkbox" name="hide_visitors_count" {% if user.hide_visitors_count %} checked {% endif %}>
+                                    <label class="ms-2" for="hide_visitors_count">Hide visitors count</label>
+                                </div>
+                                <div class="mb-2 d-flex align-items-center">
+                                    <input type="checkbox" name="hide_last_seen" {% if user.hide_last_seen %} checked {% endif %}>
+                                    <label class="ms-2" for="hide_last_seen">Hide last seen</label>
+                                </div>
+                                <div class="mb-2 d-flex align-items-center">
+                                    <input type="checkbox" name="appear_in_search_results" {% if user.appear_in_search_results %} checked {% endif %}>
+                                    <label class="ms-2" for="appear_in_search_results">Appear in search results</label>
+                                </div>
+                                <input class="btn btn-dark mt-3 w-100" style="padding: 0.5rem;" type="submit" value="Save Changes">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

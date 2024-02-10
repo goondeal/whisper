@@ -1,0 +1,2 @@
+class RequiresLogin(Exception):
+    pass
