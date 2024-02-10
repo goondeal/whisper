@@ -39,3 +39,12 @@ uvicorn app.main:app --reload
 - ali@gmail.com
 - noha@gmail.com
 - sam@gmail.com
+
+## Future Work:
+- Enable Media:
+    - User profile pic.
+    - Enable sending images with messages.
+- Enable user to change password
+- Auth:
+    - Add remember-me feature
+    - Forgot-password scenario
